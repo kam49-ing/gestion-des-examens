@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %} Ajout des notes {% endblock %}
+{% block content %} 
+
+<form method='post' action='note'id="form">
+{% csrf_token %}
+
+<div class="row">
+    <div class = "col-md-4">
+      <label for="niveau">Niveau
+          <select name="niveau" id="niveau" onchange=shownotes(this.value) class = "form-control">
+            {% for niveau in niveaux %}
+            <option value="{{ niveau.id }}">{{ niveau.libelle }}</option>
+            {% endfor %}
+          </select> 
+      </label> 
+    </div>
+    <div class = "col-md-4">
+      <label for="filiere">Filiere
+          <select name="filiere" id="filiere" class = "form-control">
+            {% for filiere in filieres %}
+            <option value="{{ filiere.id }}">{{ filiere.libelle }}</option>
+            {% endfor %}
+          </select>  
+      </label>
+    </div>
+</div>
+
+<script>
+function shownotes(id){
+    const csrf = '{% csrf_token %}'
+    $.ajax({
+        url: 'ajax_exemple',
+        type: 'POST',
+        data: ({value: $("#niveau").val(), csrfmiddlewaretoken: csrf[0].value})
+    });
+}
+</script>
+</form>
+{% endblock %}
+
